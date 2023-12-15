@@ -1,107 +1,98 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
+class MyHomePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
-      ),
-      home: Scaffold(
-        body: ListView(children: [
-          Iphone13146(),
-        ]),
-      ),
-    );
-  }
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class Iphone13146 extends StatelessWidget {
+class _MyHomePageState extends State<MyHomePage> {
+  late List data = [];
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    var uri = Uri.parse(
+        "https://touristspot-be5ea-default-rtdb.asia-southeast1.firebasedatabase.app/.json");
+
+    var response = await http.get(uri);
+    var jsonData = jsonDecode(response.body);
+
+    var spotsMap = jsonData as Map<String, dynamic>;
+
+    // Get list from Map
+    data = spotsMap["spot"] ?? [];
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      body: data.isNotEmpty
+          ? CarouselSlider(
+              items: buildCarouselItems(),
+              options: CarouselOptions(
+                  height: MediaQuery.of(context).size.height,
+                  aspectRatio: 16 / 9,
+                  enlargeCenterPage: true),
+            )
+          : Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  List<Widget> buildCarouselItems() {
+    return data.map((item) {
+      return Builder(
+        builder: (BuildContext context) {
+          return item != null ? buildCarouselCard(item) : Container();
+        },
+      );
+    }).toList();
+  }
+
+  Widget buildCarouselCard(item) {
+    return Stack(
       children: [
-        Container(
-          width: 390,
-          height: 844,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: Colors.black),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 63,
-                top: 251,
-                child: Container(
-                  width: 309,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 273.71,
-                        height: 465.30,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              left: 0,
-                              top: 0,
-                              child: Container(
-                                width: 273.71,
-                                height: 465.30,
-                                decoration: ShapeDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage("https://s3-alpha-sig.figma.com/img/04b7/8ccd/73558281cc08c4dcff8d70bbab88c761?Expires=1703462400&Signature=BLMElL01X4hW0r9o1wegOFHOnEnPr5WswW0ipaMaGhvJC4ty39icnLyLh6R6axNSRXoWifa9nkjnp5gvXCUZkNLh9l3TNTKLSX6nvV9yvSlc-1nyybtsG7irLHGgf5K-99LwK4IedRhzcDU4GTTo9XyJ4JaLwCVbTOhCC~J6-r63FGSOUxxen08Ip2eXo76SrVpP6hk~T5vKju86S8RH2im3eeK~8Di0dBHSBah6LQaWMhi6Uv~hOWODLrXA92uMgn~q9RctX1v0WtYisL35UtVuWUt2k5mxsYKj4JvvRSa28PS1Se~yCL4F7S-Yh4I3IUlgQF~qN4OgbeW~yXmxGA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.79),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 13.69,
-                              top: 398.58,
-                              child: Text(
-                                'The Ruins',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 29.94,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w600,
-                                  height: 0,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (_) => Dialog(
+                child: Column(
+                  children: [
+                    Image.network(item['imageurl']),
+                    Text(item['location']),
+                    Text(item['address']),
+                    Text(item['description']),
+                  ],
                 ),
               ),
-              Positioned(
-                left: 100,
-                top: 32,
-                child: Container(
-                  width: 170,
-                  height: 140,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage("https://s3-alpha-sig.figma.com/img/b67d/69b9/fd992e59ffdb1913ebd07aa1839dae77?Expires=1703462400&Signature=Bg6dikjave338xtqincRxgyX82hFhQZxNRoW5yhV0paLcBYRkSjvOvzFDaeqzultNaalfgY8DSp6N0KHDfcHvpK0PkRHYJBCHgqNvqqUpdj5ZP6wm5zOYNcGX6st6qsOP317l5nObmPOwVEGCjub27YcfvBO6v1~nR-k32WNdLwhRvdb0KG9Umu4Ta7XuAIzGHcety05AGJiQafbx14bQh8Mo9tBvQPyIaaQrao4rKWIxRdnUBPCzuZw5dezktydeUdUZCwRdreQiz4BxT3K4X01JhEFM9PKyYrAUTAw63f72rkqhCGfj2xq91slSEFgK~PYBjZ8-5sHlnw11Rryvg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            );
+          },
+          child: Image.network(
+            item['imageurl'],
+            fit: BoxFit.cover,
           ),
         ),
+        Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Colors.black38,
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Text(
+                item['name'],
+                style: TextStyle(color: Colors.white),
+              ),
+            ))
       ],
     );
   }

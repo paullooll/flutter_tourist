@@ -39,7 +39,8 @@ class Iphone13148 extends StatelessWidget {
                   height: 844,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage("https://s3-alpha-sig.figma.com/img/3ef8/c4dd/7d902bb4aac223466a8db8897333a867?Expires=1703462400&Signature=SA3hfv4KKcOew0gWI~4vbG2zb-IpxhPdm07jdjyfkHBG1FVhH88xJ8vk8bsVPvPP9plUeFtDg9GjJH8cyWHZbQ52i8Kj8SPxq12JCoe1lBy4piADaNQU2yMI-5r4dHAZIsEA840qL-1miMV9ysN43TxKtlGWA03448Psdmq6~IRVPJcZIJIXSavKFc7pR6~7vdaU-MlqC7lfvu7mXDIDHEbWkk-2fN-p8GgdDpUCLEdoJawrljHIA8XMOCdGE6OT1fApBlQitCIwoEdIJXlam7wPDr-JQOuqlctxOC6Xkfz7u8F20nCO6lnZnwxJ9KhvAmVGAVWYeQz-~16vLaE7Fg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"),
+                      image: NetworkImage(
+                          "https://s3-alpha-sig.figma.com/img/3ef8/c4dd/7d902bb4aac223466a8db8897333a867?Expires=1703462400&Signature=SA3hfv4KKcOew0gWI~4vbG2zb-IpxhPdm07jdjyfkHBG1FVhH88xJ8vk8bsVPvPP9plUeFtDg9GjJH8cyWHZbQ52i8Kj8SPxq12JCoe1lBy4piADaNQU2yMI-5r4dHAZIsEA840qL-1miMV9ysN43TxKtlGWA03448Psdmq6~IRVPJcZIJIXSavKFc7pR6~7vdaU-MlqC7lfvu7mXDIDHEbWkk-2fN-p8GgdDpUCLEdoJawrljHIA8XMOCdGE6OT1fApBlQitCIwoEdIJXlam7wPDr-JQOuqlctxOC6Xkfz7u8F20nCO6lnZnwxJ9KhvAmVGAVWYeQz-~16vLaE7Fg__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -105,11 +106,15 @@ class Iphone13148 extends StatelessWidget {
                         height: 37,
                         child: IconButton(
                           iconSize: 25,
-                          icon: const Icon(Icons.arrow_forward_ios, color: Colors.black,),
+                          icon: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                          ),
                           onPressed: () {
                             Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => const HomePage()),
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MyHomePage()),
                             );
                           },
                         ),
