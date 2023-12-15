@@ -67,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
               builder: (_) => Dialog(
                 child: Column(
                   children: [
+                    //on click display
                     Image.network(item['imageurl']),
                     Text(item['location']),
                     Text(item['address']),
@@ -76,11 +77,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             );
           },
+          //carousel pic
           child: Image.network(
             item['imageurl'],
             fit: BoxFit.cover,
           ),
         ),
+        //carousel name
         Positioned(
             bottom: 0,
             left: 0,
